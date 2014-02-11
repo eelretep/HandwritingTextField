@@ -16,7 +16,8 @@
 #define TAG_SEGMENTEDCONTROL            1000
 #define TAG_SCROLLVIEW                  1001
 
-static const NSTimeInterval kDelayBeforeFetch = 1.5;
+const NSTimeInterval kDelayBeforeFetch  = 1.5;
+NSString * const kNoResultsText         = @"No Handwriting Results";
 
 @interface HandwritingRecognizer() {
     TrackingView *_activeTrackingView;
@@ -75,21 +76,19 @@ static const NSTimeInterval kDelayBeforeFetch = 1.5;
     _activeTrackingView = trackingView;
 
     if (_activeTrackingView != nil) {
+        
         if (CGRectEqualToRect([_activeTrackingView bounds], [[_activeTrackingView window] bounds])) {
             //tracking in fullscreen
-            UIEdgeInsets edgeInsets = UIEdgeInsetsMake(20.0f, 5.0f, 5.0f, 5.0f);
-            if ([[UIApplication sharedApplication] isStatusBarHidden]) {
-                edgeInsets.top = 5.0f;
+            if ([[UIApplication sharedApplication] isStatusBarHidden] == NO) {
+                UIEdgeInsets edgeInsets = [_activeTrackingView controlsEdgeInsets];
+                edgeInsets.top = 20.0f;
+                [_activeTrackingView setControlsEdgeInsets:edgeInsets];
             }
-
-            [_activeTrackingView setControlsEdgeInsets:edgeInsets];
+            
             [_activeTrackingView setControlsVisible:YES];
-
-        } else {
-            [_activeTrackingView setControlsVisible:NO];
         }
         
-        [self clearHandwriting:_activeTrackingView placeholderText:@"No Handwriting Results"];
+        [self clearHandwriting:_activeTrackingView];
         
         success = YES;
     }
@@ -110,13 +109,9 @@ static const NSTimeInterval kDelayBeforeFetch = 1.5;
 }
 
 - (void)clearHandwriting:(TrackingView *)trackingView {
-    [self clearHandwriting:trackingView placeholderText:nil];
-}
-
-- (void)clearHandwriting:(TrackingView *)trackingView placeholderText:(NSString *)text
-{
+    
     [trackingView clearInk];
-    [self clearHandwritingResults:trackingView placedholderText:text];
+    [self clearHandwritingResults:trackingView placedholderText:kNoResultsText];
     
     if (_activeTrackingView == trackingView) {
         [self cancelFetchHandwritingRecognitionResults];
@@ -166,7 +161,13 @@ static const NSTimeInterval kDelayBeforeFetch = 1.5;
                 NSArray *resultsArray = [[[responseJSON lastObject] lastObject] lastObject];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self update:_activeTrackingView withHandwritingResults:resultsArray];
+                    NSArray *resultsToDisplay = resultsArray;
+                    
+                    if ([[_activeTrackingView delegate] respondsToSelector:@selector(trackingView:displayHandwritingResults:)]) {
+                        resultsToDisplay = [[_activeTrackingView delegate] trackingView:_activeTrackingView displayHandwritingResults:resultsArray];
+                    }
+                    
+                    [self update:_activeTrackingView withHandwritingResults:resultsToDisplay];
                 });
             }
             
@@ -232,6 +233,12 @@ static const NSTimeInterval kDelayBeforeFetch = 1.5;
     resultsSegmentedControl = [[UISegmentedControl alloc] initWithItems:results];
     [resultsSegmentedControl setTag:TAG_SEGMENTEDCONTROL];
     [resultsSegmentedControl addTarget:self action:@selector(handwritingResultSelected:) forControlEvents:UIControlEventValueChanged];
+
+    // resize the control
+    UIEdgeInsets edgeInsets = [trackingView controlsEdgeInsets];
+    CGRect resultsControlFrame = [resultsSegmentedControl frame];
+    resultsControlFrame.size.height = MAX(resultsControlFrame.size.height, kTrackingViewMinControlHeight+edgeInsets.bottom*2);
+    [resultsSegmentedControl setFrame:resultsControlFrame];
     
     // create a scroll view to contain the results
     CGRect trackingViewBounds = [trackingView bounds];

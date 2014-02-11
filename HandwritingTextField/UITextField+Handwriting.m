@@ -13,6 +13,7 @@
 #import "TrackingView.h"
 
 static void const * kTextFieldHandwritingEnabledKey = &kTextFieldHandwritingEnabledKey;
+static void const * kTextFieldHandwritingControlsVisibleKey = &kTextFieldHandwritingControlsVisibleKey;
 static void const * kTextFieldHandwritingViewKey = &kTextFieldHandwritingViewKey;
 static void const * kTextFieldTrackingViewKey = &kTextFieldTrackingViewKey;
 
@@ -42,6 +43,25 @@ static void const * kTextFieldTrackingViewKey = &kTextFieldTrackingViewKey;
     return objc_getAssociatedObject(self, kTextFieldHandwritingViewKey);
 }
 
+- (void)setHandwritingControlsVisible:(BOOL)handwritingControlsVisible
+{
+    NSNumber *number = [NSNumber numberWithBool:handwritingControlsVisible];
+    objc_setAssociatedObject(self, kTextFieldHandwritingControlsVisibleKey, number, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    TrackingView *trackingView = [self trackingView];
+    if ([self trackingView] != nil) {
+        [trackingView setControlsVisible:handwritingControlsVisible];
+    }
+}
+
+- (BOOL)handwritingControlsVisible
+{
+    NSNumber *number = objc_getAssociatedObject(self, kTextFieldHandwritingControlsVisibleKey);
+    return [number boolValue];
+}
+
+
+
 - (void)setTrackingView:(TrackingView *)view
 {
     objc_setAssociatedObject(self, kTextFieldTrackingViewKey, view, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -58,13 +78,23 @@ static void const * kTextFieldTrackingViewKey = &kTextFieldTrackingViewKey;
 - (void)beginHandwriting
 {
     if ([self handwritingEnabled]) {
+        // create the overlay tracking
         if ([self trackingView] == nil) {
             TrackingView *trackingView = [[HandwritingRecognizer sharedRecognizer] overlayTrackingViewInView:[self handwritingView]];
             [trackingView setDelegate:(id<TrackingViewDelegate>)self];
             
             [self setTrackingView:trackingView];
+
         }
-        if ([[HandwritingRecognizer sharedRecognizer] startTrackingHandwriting:[self trackingView]]) {
+        
+        // start tracking
+        TrackingView *trackingView = [self trackingView];
+        if ([[HandwritingRecognizer sharedRecognizer] startTrackingHandwriting:trackingView]) {
+            if ([self handwritingControlsVisible]) {
+                [trackingView setControlsVisible:YES];
+            }
+
+            // set a blank input view to replace the default keyboard
             [self setInputView:[[UIView alloc] init]];
         }
     }
@@ -72,8 +102,9 @@ static void const * kTextFieldTrackingViewKey = &kTextFieldTrackingViewKey;
 
 - (void)endHandwriting
 {
-    if ([self trackingView]) {
-        [[HandwritingRecognizer sharedRecognizer] stopTrackingHandwriting:[self trackingView]];
+    TrackingView *trackingView = [self trackingView];
+    if (trackingView != nil) {
+        [[HandwritingRecognizer sharedRecognizer] stopTrackingHandwriting:trackingView];
         [self setTrackingView:nil];
     }
     [self setInputView:nil];

@@ -12,10 +12,10 @@
 
 @interface ViewController ()
 
-@property (nonatomic, weak) IBOutlet UITextField *textFieldDefault;
+@property (nonatomic, weak) IBOutlet UITextField *textFieldFullscreenView;
 @property (nonatomic, weak) IBOutlet UITextField *textFieldCustomView;
 @property (nonatomic, weak) IBOutlet UIView *customHandwritingView;
-
+@property (nonatomic, weak) IBOutlet UISwitch *switchControlsVisible;
 
 @end
 
@@ -26,11 +26,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
     
-    [_textFieldDefault setHandwritingEnabled:YES];
-    [_textFieldDefault setHandwritingView:[self view]];
-    [_textFieldDefault setDelegate:self];
+    [_textFieldFullscreenView setHandwritingEnabled:YES];
+    [_textFieldFullscreenView setHandwritingView:[self view]];
+    [_textFieldFullscreenView setDelegate:self];
     
     [_textFieldCustomView setHandwritingEnabled:YES];
     [_textFieldCustomView setHandwritingView:_customHandwritingView];
@@ -48,6 +47,7 @@
     BOOL shouldBeginEditing = YES;
     
     if ([textField handwritingEnabled]) {
+        [textField setHandwritingControlsVisible:[_switchControlsVisible isOn]];
         [textField beginHandwriting];
     }
     
@@ -80,4 +80,12 @@
     return shouldReceiveTouch;
 }
 
+#pragma mark - UI
+
+- (IBAction)handleSwitchControlsVisible:(UISwitch *)sender
+{
+    if ([_textFieldCustomView isFirstResponder]) {
+        [_textFieldCustomView  setHandwritingControlsVisible:[sender isOn]];
+    }
+}
 @end

@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		E73C13851889E7B200669186 /* TrackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = E73C13841889E7B200669186 /* TrackingView.m */; };
+		E77A87C21896EBEA00DD7508 /* space@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E77A87C11896EBEA00DD7508 /* space@2x.png */; };
+		E77A87CA1898582900DD7508 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FB5EA01888994B00AAC64A /* XCTest.framework */; };
+		E77A87CB1898582900DD7508 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FB5E7E1888994B00AAC64A /* Foundation.framework */; };
+		E77A87CC1898582900DD7508 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7FB5E821888994B00AAC64A /* UIKit.framework */; };
+		E77A87D21898582900DD7508 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E77A87D01898582900DD7508 /* InfoPlist.strings */; };
+		E77A87D41898582900DD7508 /* HandwritingTextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E77A87D31898582900DD7508 /* HandwritingTextFieldTests.m */; };
+		E77A87DD18999DE600DD7508 /* FakeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = E77A87DC18999DE600DD7508 /* FakeTouch.m */; };
 		E7F039641893036A00D575D1 /* backspace@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039611893036A00D575D1 /* backspace@2x.png */; };
 		E7F039651893036A00D575D1 /* done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039621893036A00D575D1 /* done@2x.png */; };
 		E7F039661893036A00D575D1 /* keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039631893036A00D575D1 /* keyboard@2x.png */; };
@@ -26,9 +33,27 @@
 		E7FB5EBF1888A29C00AAC64A /* HandwritingRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FB5EBE1888A29C00AAC64A /* HandwritingRecognizer.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E77A87D61898582900DD7508 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E7FB5E731888994B00AAC64A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E7FB5E7A1888994B00AAC64A;
+			remoteInfo = HandwritingTextFieldDemo;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E73C13831889E7B200669186 /* TrackingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackingView.h; sourceTree = "<group>"; };
 		E73C13841889E7B200669186 /* TrackingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackingView.m; sourceTree = "<group>"; };
+		E77A87C11896EBEA00DD7508 /* space@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "space@2x.png"; sourceTree = "<group>"; };
+		E77A87C91898582800DD7508 /* HandwritingTextFieldTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HandwritingTextFieldTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E77A87CF1898582900DD7508 /* HandwritingTextFieldTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HandwritingTextFieldTests-Info.plist"; sourceTree = "<group>"; };
+		E77A87D11898582900DD7508 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E77A87D31898582900DD7508 /* HandwritingTextFieldTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HandwritingTextFieldTests.m; sourceTree = "<group>"; };
+		E77A87D51898582900DD7508 /* HandwritingTextFieldTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HandwritingTextFieldTests-Prefix.pch"; sourceTree = "<group>"; };
+		E77A87DB18999DE600DD7508 /* FakeTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeTouch.h; sourceTree = "<group>"; };
+		E77A87DC18999DE600DD7508 /* FakeTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeTouch.m; sourceTree = "<group>"; };
 		E7F039611893036A00D575D1 /* backspace@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backspace@2x.png"; sourceTree = "<group>"; };
 		E7F039621893036A00D575D1 /* done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "done@2x.png"; sourceTree = "<group>"; };
 		E7F039631893036A00D575D1 /* keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard@2x.png"; sourceTree = "<group>"; };
@@ -57,6 +82,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E77A87C61898582800DD7508 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E77A87CA1898582900DD7508 /* XCTest.framework in Frameworks */,
+				E77A87CC1898582900DD7508 /* UIKit.framework in Frameworks */,
+				E77A87CB1898582900DD7508 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E7FB5E781888994B00AAC64A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -70,12 +105,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E77A87CD1898582900DD7508 /* HandwritingTextFieldTests */ = {
+			isa = PBXGroup;
+			children = (
+				E77A87D31898582900DD7508 /* HandwritingTextFieldTests.m */,
+				E77A87DB18999DE600DD7508 /* FakeTouch.h */,
+				E77A87DC18999DE600DD7508 /* FakeTouch.m */,
+				E77A87CE1898582900DD7508 /* Supporting Files */,
+			);
+			path = HandwritingTextFieldTests;
+			sourceTree = "<group>";
+		};
+		E77A87CE1898582900DD7508 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E77A87CF1898582900DD7508 /* HandwritingTextFieldTests-Info.plist */,
+				E77A87D01898582900DD7508 /* InfoPlist.strings */,
+				E77A87D51898582900DD7508 /* HandwritingTextFieldTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		E7F039601893036A00D575D1 /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				E7F039611893036A00D575D1 /* backspace@2x.png */,
 				E7F039621893036A00D575D1 /* done@2x.png */,
 				E7F039631893036A00D575D1 /* keyboard@2x.png */,
+				E7F039611893036A00D575D1 /* backspace@2x.png */,
+				E77A87C11896EBEA00DD7508 /* space@2x.png */,
 			);
 			path = resources;
 			sourceTree = "<group>";
@@ -84,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				E7FB5E841888994B00AAC64A /* HandwritingTextFieldDemo */,
+				E77A87CD1898582900DD7508 /* HandwritingTextFieldTests */,
 				E7FB5E7D1888994B00AAC64A /* Frameworks */,
 				E7FB5E7C1888994B00AAC64A /* Products */,
 			);
@@ -93,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				E7FB5E7B1888994B00AAC64A /* HandwritingTextFieldDemo.app */,
+				E77A87C91898582800DD7508 /* HandwritingTextFieldTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,6 +214,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		E77A87C81898582800DD7508 /* HandwritingTextFieldTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E77A87DA1898582900DD7508 /* Build configuration list for PBXNativeTarget "HandwritingTextFieldTests" */;
+			buildPhases = (
+				E77A87C51898582800DD7508 /* Sources */,
+				E77A87C61898582800DD7508 /* Frameworks */,
+				E77A87C71898582800DD7508 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E77A87D71898582900DD7508 /* PBXTargetDependency */,
+			);
+			name = HandwritingTextFieldTests;
+			productName = HandwritingTextFieldTests;
+			productReference = E77A87C91898582800DD7508 /* HandwritingTextFieldTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		E7FB5E7A1888994B00AAC64A /* HandwritingTextFieldDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7FB5EB01888994B00AAC64A /* Build configuration list for PBXNativeTarget "HandwritingTextFieldDemo" */;
@@ -180,6 +257,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Peter Lee";
+				TargetAttributes = {
+					E77A87C81898582800DD7508 = {
+						TestTargetID = E7FB5E7A1888994B00AAC64A;
+					};
+				};
 			};
 			buildConfigurationList = E7FB5E761888994B00AAC64A /* Build configuration list for PBXProject "HandwritingTextFieldDemo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -195,11 +277,20 @@
 			projectRoot = "";
 			targets = (
 				E7FB5E7A1888994B00AAC64A /* HandwritingTextFieldDemo */,
+				E77A87C81898582800DD7508 /* HandwritingTextFieldTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E77A87C71898582800DD7508 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E77A87D21898582900DD7508 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E7FB5E791888994B00AAC64A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -209,6 +300,7 @@
 				E7F039641893036A00D575D1 /* backspace@2x.png in Resources */,
 				E7FB5E9A1888994B00AAC64A /* Images.xcassets in Resources */,
 				E7FB5E921888994B00AAC64A /* Main_iPhone.storyboard in Resources */,
+				E77A87C21896EBEA00DD7508 /* space@2x.png in Resources */,
 				E7F039651893036A00D575D1 /* done@2x.png in Resources */,
 				E7FB5E891888994B00AAC64A /* InfoPlist.strings in Resources */,
 			);
@@ -217,6 +309,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E77A87C51898582800DD7508 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E77A87DD18999DE600DD7508 /* FakeTouch.m in Sources */,
+				E77A87D41898582900DD7508 /* HandwritingTextFieldTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E7FB5E771888994B00AAC64A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -233,7 +334,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		E77A87D71898582900DD7508 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E7FB5E7A1888994B00AAC64A /* HandwritingTextFieldDemo */;
+			targetProxy = E77A87D61898582900DD7508 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		E77A87D01898582900DD7508 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E77A87D11898582900DD7508 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		E7FB5E871888994B00AAC64A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -261,6 +378,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E77A87D81898582900DD7508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/HandwritingTextFieldDemo.app/HandwritingTextFieldDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HandwritingTextFieldTests/HandwritingTextFieldTests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "HandwritingTextFieldTests/HandwritingTextFieldTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		E77A87D91898582900DD7508 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/HandwritingTextFieldDemo.app/HandwritingTextFieldDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "HandwritingTextFieldTests/HandwritingTextFieldTests-Prefix.pch";
+				INFOPLIST_FILE = "HandwritingTextFieldTests/HandwritingTextFieldTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
 		E7FB5EAE1888994B00AAC64A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -364,6 +523,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E77A87DA1898582900DD7508 /* Build configuration list for PBXNativeTarget "HandwritingTextFieldTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E77A87D81898582900DD7508 /* Debug */,
+				E77A87D91898582900DD7508 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E7FB5E761888994B00AAC64A /* Build configuration list for PBXProject "HandwritingTextFieldDemo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

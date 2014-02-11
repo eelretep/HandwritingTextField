@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol TrackingViewDelegate;
+extern const CGFloat kTrackingViewMinControlHeight;
 
 typedef enum {
     TrackingViewEventDone = 0,
@@ -36,11 +37,12 @@ typedef enum {
 
 
 
-
-
-@protocol TrackingViewDelegate
+@protocol TrackingViewDelegate <NSObject>
 
 - (void)trackingView:(TrackingView *)trackingView didRecognizeText:(NSString *)text;
 - (void)trackingView:(TrackingView *)trackingView didReceiveEvent:(TrackingViewEvent)event;
+
+@optional
+- (NSArray *)trackingView:(TrackingView *)trackingView displayHandwritingResults:(NSArray *)results;
 
 @end

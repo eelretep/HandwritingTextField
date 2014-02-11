@@ -11,6 +11,7 @@
 @interface UITextField (Handwriting)
 
 @property (nonatomic) BOOL handwritingEnabled;
+@property (nonatomic) BOOL handwritingControlsVisible;
 @property (nonatomic) UIView *handwritingView;
 
 - (void)beginHandwriting;

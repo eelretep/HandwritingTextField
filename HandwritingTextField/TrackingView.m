@@ -12,8 +12,11 @@
 
 #define MIDPOINT(p1,p2)             CGPointMake((p1.x + p2.x) * 0.5, (p1.y + p2.y) * 0.5)
 
-static const CGFloat kMinDistance = 5;
-static const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
+const CGFloat kTrackingViewMinControlWidth = 50.0f;
+const CGFloat kTrackingViewMinControlHeight = 25.0f;
+
+const CGFloat kMinDistance = 5;
+const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
 
 @interface TrackingView ()
 {
@@ -40,6 +43,8 @@ static const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
     _fillPath = CGPathCreateMutable();
     
     _inkPoints = [NSMutableArray array];
+    
+    _controlsEdgeInsets = UIEdgeInsetsMake(5.0f, 0.0f, 5.0f, 0.0f);
     
     [self setExclusiveTouch:YES];
     [self setBackgroundColor:[UIColor clearColor]];
@@ -77,14 +82,17 @@ static const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
 
 - (void)showControls
 {
+    CGRect trackingViewBounds = [self bounds];
+
     if (_doneButton == nil) {
         _doneButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [_doneButton setImage:[UIImage imageNamed:@"done.png"] forState:UIControlStateNormal];
         [_doneButton addTarget:self action:@selector(doneTapped:) forControlEvents:UIControlEventTouchUpInside];
 
-        [_doneButton sizeToFit];
+       [_doneButton sizeToFit];
         CGRect frame = [_doneButton frame];
-        CGRect trackingViewBounds = [self bounds];
+        frame.size.width = MAX(frame.size.width, kTrackingViewMinControlWidth);
+        frame.size.height = MAX(frame.size.height, kTrackingViewMinControlHeight);
         frame.origin.x = CGRectGetMaxX(trackingViewBounds) - frame.size.width - _controlsEdgeInsets.right;
         frame.origin.y = CGRectGetMinY(trackingViewBounds) + _controlsEdgeInsets.top;
         [_doneButton setFrame:frame];
@@ -99,7 +107,8 @@ static const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
         
         [_showKeyboardButton sizeToFit];
         CGRect frame = [_showKeyboardButton frame];
-        CGRect trackingViewBounds = [self bounds];
+        frame.size.width = MAX(frame.size.width, kTrackingViewMinControlWidth);
+        frame.size.height = MAX(frame.size.height, kTrackingViewMinControlHeight);
         frame.origin.x = CGRectGetMinX(trackingViewBounds) + _controlsEdgeInsets.left;
         frame.origin.y = CGRectGetMaxY(trackingViewBounds) - frame.size.height - _controlsEdgeInsets.bottom;
         [_showKeyboardButton setFrame:frame];
@@ -114,7 +123,8 @@ static const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
         
         [_backspaceKey sizeToFit];
         CGRect frame = [_backspaceKey frame];
-        CGRect trackingViewBounds = [self bounds];
+        frame.size.width = MAX(frame.size.width, kTrackingViewMinControlWidth);
+        frame.size.height = MAX(frame.size.height, kTrackingViewMinControlHeight);
         frame.origin.x = CGRectGetMaxX(trackingViewBounds) - frame.size.width*2 - _controlsEdgeInsets.left;
         frame.origin.y = CGRectGetMaxY(trackingViewBounds) - frame.size.height - _controlsEdgeInsets.bottom;
         [_backspaceKey setFrame:frame];
@@ -124,18 +134,24 @@ static const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
     
     if (_spaceKey == nil) {
         _spaceKey = [UIButton buttonWithType:UIButtonTypeSystem];
-        [_spaceKey setTitle:@"␣" forState:UIControlStateNormal];
+        [_spaceKey setImage:[UIImage imageNamed:@"space.png"] forState:UIControlStateNormal];
         [_spaceKey addTarget:self action:@selector(spaceTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         [_spaceKey sizeToFit];
         CGRect frame = [_spaceKey frame];
-        CGRect trackingViewBounds = [self bounds];
+        frame.size.width = MAX(frame.size.width, kTrackingViewMinControlWidth);
+        frame.size.height = MAX(frame.size.height, kTrackingViewMinControlHeight);
         frame.origin.x = CGRectGetMaxX(trackingViewBounds) - frame.size.width - _controlsEdgeInsets.left;
         frame.origin.y = CGRectGetMaxY(trackingViewBounds) - frame.size.height - _controlsEdgeInsets.bottom;
         [_spaceKey setFrame:frame];
         
         [self addSubview:_spaceKey];
     }
+    
+    [_doneButton setHidden:NO];
+    [_showKeyboardButton setHidden:NO];
+    [_backspaceKey setHidden:NO];
+    [_spaceKey setHidden:NO];
 }
 
 - (void)hideControls

@@ -20,6 +20,7 @@
 - (void)clearHandwriting:(TrackingView *)trackingView;
 
 - (void)fetchHandwritingRecognitionResultsAfterDelay;
+- (void)fetchHandwritingRecognitionResults;
 - (void)cancelFetchHandwritingRecognitionResults;
 
 @property (nonatomic) UIColor *lineColor;
