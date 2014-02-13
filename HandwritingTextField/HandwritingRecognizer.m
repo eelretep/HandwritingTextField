@@ -1,22 +1,26 @@
+// This file is part of the HandwritingTextField package.
+//
+// For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+// https://github.com/eelretep/HandwritingTextField
 //
 //  HandwritingRecognizer.m
 //  HandwritingTextField
 //
 //  Created by Peter Lee on 1/16/14.
-//  Copyright (c) 2014 Peter Lee. All rights reserved.
+//  Copyright (c) 2014 Peter Lee <eelretep@gmail.com>. All rights reserved.
 //
 
 #import "HandwritingRecognizer.h"
 #import "TrackingView.h"
 #import "InkPoint.h"
 
-#define DEFAULT_LINECOLOR               [UIColor blackColor]
-#define DEFAULT_LINEWIDTH               5.0f
-
 #define TAG_SEGMENTEDCONTROL            1000
 #define TAG_SCROLLVIEW                  1001
 
-const NSTimeInterval kDelayBeforeFetch  = 1.5;
+#define HANDWRITING_LINECOLOR           [UIColor blackColor]
+#define HANDWRITING_LINEWIDTH           5.0f
+
+const NSTimeInterval kDelayBeforeFetch  = 1.0;
 NSString * const kNoResultsText         = @"No Handwriting Results";
 
 @interface HandwritingRecognizer() {
@@ -27,9 +31,9 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
 
 @end
 
-
-
 @implementation HandwritingRecognizer
+
+#pragma mark - lifecycle
 
 + (instancetype)sharedRecognizer
 {
@@ -47,13 +51,12 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     self = [super init];
     
 	if (self != nil) {
-        [self setLineColor:DEFAULT_LINECOLOR];
-        [self setLineWidth:DEFAULT_LINEWIDTH];
+        [self setLineColor:HANDWRITING_LINECOLOR];
+        [self setLineWidth:HANDWRITING_LINEWIDTH];
     }
     
     return self;
 }
-
 
 #pragma mark - tracking
 
@@ -76,19 +79,7 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     _activeTrackingView = trackingView;
 
     if (_activeTrackingView != nil) {
-        
-        if (CGRectEqualToRect([_activeTrackingView bounds], [[_activeTrackingView window] bounds])) {
-            //tracking in fullscreen
-            if ([[UIApplication sharedApplication] isStatusBarHidden] == NO) {
-                UIEdgeInsets edgeInsets = [_activeTrackingView controlsEdgeInsets];
-                edgeInsets.top = 20.0f;
-                [_activeTrackingView setControlsEdgeInsets:edgeInsets];
-            }
-            
-            [_activeTrackingView setControlsVisible:YES];
-        }
-        
-        [self clearHandwriting:_activeTrackingView];
+        [self clear:_activeTrackingView];
         
         success = YES;
     }
@@ -99,16 +90,15 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
 - (void)stopTrackingHandwriting:(TrackingView *)trackingView
 {
     [trackingView removeFromSuperview];
-    //[trackingView stopUpdating];
     
     if (_activeTrackingView == trackingView) {
         _activeTrackingView = nil;
-
-        [self clearHandwriting:_activeTrackingView];
     }
 }
 
-- (void)clearHandwriting:(TrackingView *)trackingView {
+#pragma mark - control behaviors
+
+- (void)clear:(TrackingView *)trackingView {
     
     [trackingView clearInk];
     [self clearHandwritingResults:trackingView placedholderText:kNoResultsText];
@@ -118,8 +108,15 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     }
 }
 
-#pragma mark - handwriting recognition
+- (void)layoutControls:(TrackingView *)trackingView
+{
+    UIScrollView *resultsScrollView = [self resultsScrollView:trackingView];
+    if (trackingView && resultsScrollView) {
+        [self sizeResultsScrollView:resultsScrollView toFitTrackingView:trackingView];
+    }
+}
 
+#pragma mark - handwriting recognition
 
 - (void)fetchHandwritingRecognitionResultsAfterDelay
 {
@@ -135,8 +132,6 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     [_handwritingRecognitionTask cancel];
     _handwritingRecognitionTask = nil;
 }
-
-
 
 - (void)fetchHandwritingRecognitionResults
 {
@@ -171,7 +166,7 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
                 });
             }
             
-            NSLog(@"requestOCRForInkPoints (%@)  %@ \n\n--------------->\n\n %@", urlRequest, requestJSON, responseJSON);
+            //NSLog(@"requestOCRForInkPoints (%@)  %@ \n\n--------------->\n\n %@", urlRequest, requestJSON, responseJSON);
         }
     }];
     [_handwritingRecognitionTask resume];
@@ -211,7 +206,7 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     return JSONObject;
 }
 
-#pragma mark - display handwriting results
+#pragma mark - handwriting recognition results
 
 - (void)clearHandwritingResults:(TrackingView *)trackingView placedholderText:(NSString *)text
 {
@@ -239,70 +234,70 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     CGRect resultsControlFrame = [resultsSegmentedControl frame];
     resultsControlFrame.size.height = MAX(resultsControlFrame.size.height, kTrackingViewMinControlHeight+edgeInsets.bottom*2);
     [resultsSegmentedControl setFrame:resultsControlFrame];
-    
+
+
     // create a scroll view to contain the results
-    CGRect trackingViewBounds = [trackingView bounds];
     CGSize resultsControlSize = [resultsSegmentedControl frame].size;
-    
     UIScrollView *resultsScrollView = [self resultsScrollView:trackingView];
     if (resultsScrollView == nil) {
+        CGRect trackingViewBounds = [trackingView bounds];
+        
         // size the results view width to the tracking view and the height to the results control
         resultsScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0f, CGRectGetMaxY(trackingViewBounds) - resultsControlSize.height, trackingViewBounds.size.width, resultsControlSize.height)];
         [resultsScrollView setTag:TAG_SCROLLVIEW];
         [trackingView insertSubview:resultsScrollView atIndex:0];
     }
     
-    // position the results control in the middle of the tracking/scroll view
-    if (resultsControlSize.width < trackingViewBounds.size.width) {
-        CGRect frame = [resultsSegmentedControl frame];
-        frame.origin.x = CGRectGetMidX(trackingViewBounds) - frame.size.width/2;
-        [resultsSegmentedControl setFrame:frame];
-    }
     [resultsScrollView setContentSize:resultsControlSize];
     [resultsScrollView addSubview:resultsSegmentedControl];
-
     
-    // reset the scrollview width
-    CGRect scrollviewFrame = [resultsScrollView frame];
-    scrollviewFrame.origin.x = 0.0f;
-    scrollviewFrame.size.width = trackingViewBounds.size.width;
-    [resultsScrollView setFrame:scrollviewFrame];
-    
-    // bound the scrollview edges to avoid overlapping controls (assume scrollview and controls share a coordinate system)
-    if ([trackingView controlsVisible]) {
-        CGRect contentFrame = [trackingView convertRect:[resultsSegmentedControl frame] fromView:resultsScrollView];
-        CGRect leftControlFrame = [[trackingView showKeyboardButton] frame];
-        if (CGRectIntersectsRect(contentFrame, leftControlFrame)) {
-            scrollviewFrame.origin.x = CGRectGetMaxX(leftControlFrame);
-            scrollviewFrame.size.width -= scrollviewFrame.origin.x;
-            [resultsScrollView setFrame:scrollviewFrame];
-        }
-        
-        contentFrame = [trackingView convertRect:[resultsSegmentedControl frame] fromView:resultsScrollView];
-        CGRect rightControlFrame = [[trackingView backspaceKey] frame];
-        if (CGRectIntersectsRect(contentFrame, rightControlFrame)) {
-            scrollviewFrame.size.width = CGRectGetMinX(rightControlFrame) - scrollviewFrame.origin.x;
-            [resultsScrollView setFrame:scrollviewFrame];
-        }
-    }
-
-    
-    
-
-    
+    [self sizeResultsScrollView:resultsScrollView toFitTrackingView:trackingView];
 }
 
 - (void)handwritingResultSelected:(UISegmentedControl *)control
 {
     NSString *selectedResultText = [control titleForSegmentAtIndex:[control selectedSegmentIndex]];
     
-    [control setEnabled:NO];
+    if ([control isDescendantOfView:_activeTrackingView]) {
+        [self clear:_activeTrackingView];
+        [[_activeTrackingView delegate] trackingView:_activeTrackingView didRecognizeText:selectedResultText];
+    }
+}
+
+#pragma mark - helpers
+
+- (void)sizeResultsScrollView:(UIScrollView *)resultsScrollView toFitTrackingView:(TrackingView *)trackingView
+{
+    CGRect trackingViewBounds = [trackingView bounds];
+
+    // reset the scrollview width
+    CGRect scrollviewFrame = [resultsScrollView frame];
+    scrollviewFrame.origin.x = 0.0f;
+    scrollviewFrame.size.width = trackingViewBounds.size.width;
     
-    UIView *view = [[control superview] superview];
-    if ([view isKindOfClass:[TrackingView class]]) {
-        TrackingView *trackingView = (TrackingView *)view;
-        [self clearHandwriting:trackingView];
-        [[trackingView delegate] trackingView:trackingView didRecognizeText:selectedResultText];
+    // bound the scrollview edges to avoid overlapping controls (assume scrollview and controls share a coordinate system)
+    if ([trackingView controlsVisible]) {
+        CGRect leftControlFrame = [[trackingView clearButton] frame];
+        if (CGRectIntersectsRect(scrollviewFrame, leftControlFrame)) {
+            scrollviewFrame.origin.x = CGRectGetMaxX(leftControlFrame);
+            scrollviewFrame.size.width -= scrollviewFrame.origin.x;
+        }
+        
+        CGRect rightControlFrame = [[trackingView backspaceKey] frame];
+        if (CGRectIntersectsRect(scrollviewFrame, rightControlFrame)) {
+            scrollviewFrame.size.width = CGRectGetMinX(rightControlFrame) - scrollviewFrame.origin.x;
+        }
+    }
+    
+    [resultsScrollView setFrame:scrollviewFrame];
+    
+    // position the results control in the middle of the scroll view
+    UISegmentedControl *resultsSegmentedControl = [self resultsSegmentedControl:trackingView];
+    CGRect resultsControlFrame = [resultsSegmentedControl frame];
+
+    if (resultsControlFrame.size.width < scrollviewFrame.size.width) {
+        resultsControlFrame.origin.x = scrollviewFrame.size.width/2 - resultsControlFrame.size.width/2;
+        [resultsSegmentedControl setFrame:resultsControlFrame];
     }
 }
 

@@ -1,9 +1,13 @@
+// This file is part of the HandwritingTextField package.
+//
+// For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+// https://github.com/eelretep/HandwritingTextField
 //
 //  TrackingView.h
 //  HandwritingTextField
 //
 //  Created by Peter Lee on 1/17/14.
-//  Copyright (c) 2014 Peter Lee. All rights reserved.
+//  Copyright (c) 2014 Peter Lee <eelretep@gmail.com>. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -13,11 +17,11 @@ extern const CGFloat kTrackingViewMinControlHeight;
 
 typedef enum {
     TrackingViewEventDone = 0,
-    TrackingViewEventSpace = 1,
-    TrackingViewEventBackspace = 2,
-    TrackingViewEventShowKeyboard = 3,
+    TrackingViewEventClear,
+    TrackingViewEventSpace,
+    TrackingViewEventBackspace,
+    TrackingViewEventShowKeyboard,
 } TrackingViewEvent;
-
 
 @interface TrackingView : UIView
 
@@ -27,6 +31,7 @@ typedef enum {
 
 @property (nonatomic, readonly) UIButton *doneButton;
 @property (nonatomic, readonly) UIButton *showKeyboardButton;
+@property (nonatomic, readonly) UIButton *clearButton;
 @property (nonatomic, readonly) UIButton *backspaceKey;
 @property (nonatomic, readonly) UIButton *spaceKey;
 
@@ -34,7 +39,6 @@ typedef enum {
 - (void)clearInk;
 
 @end
-
 
 
 @protocol TrackingViewDelegate <NSObject>

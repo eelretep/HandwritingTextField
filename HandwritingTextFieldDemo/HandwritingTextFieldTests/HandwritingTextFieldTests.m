@@ -1,9 +1,13 @@
+// This file is part of the HandwritingTextField package.
+//
+// For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+// https://github.com/eelretep/HandwritingTextField
 //
 //  HandwritingTextFieldTests.m
 //  HandwritingTextFieldTests
 //
 //  Created by Peter Lee on 1/28/14.
-//  Copyright (c) 2014 Peter Lee. All rights reserved.
+//  Copyright (c) 2014 Peter Lee <eelretep@gmail.com>. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
@@ -14,6 +18,7 @@
 #import "HandwritingRecognizer.h"
 
 const NSTimeInterval kTimeoutInterval = 30.0f;
+const NSTimeInterval kTeardownInterval = 5.0f;
 
 @interface HandwritingTextFieldTests : XCTestCase <TrackingViewDelegate> {
     ViewController *_mainViewController;
@@ -58,6 +63,10 @@ const NSTimeInterval kTimeoutInterval = 30.0f;
     [[_mainViewController view] endEditing:YES];
     [_textFieldFullscreenView setText:nil];
     [_textFieldCustomView setText:nil];
+    
+    // run loop cleanup
+    NSDate *timeoutDate = [NSDate dateWithTimeInterval:kTeardownInterval sinceDate:[NSDate date]];
+    [[NSRunLoop currentRunLoop] runUntilDate:timeoutDate];
 }
 
 - (void)testSetup
@@ -118,7 +127,9 @@ const NSTimeInterval kTimeoutInterval = 30.0f;
 }
 
 #pragma mark - touch simulation
-
+/*! Simulates a touch sequence with GCD. The timing of the touch events does not translate very accurately to the timing encoded in the fake touches. So the results returned based on these simulated touches should be allowed some variance.
+ \param fakeTouches an array of FakeTouch objects to simulate a touch sequence
+ */
 - (void)simulateTouchSequence:(NSArray *)fakeTouches inView:(TrackingView *)trackingView completion:(void(^)(void))completion
 {
     dispatch_group_t simulateTouchGroup = dispatch_group_create();

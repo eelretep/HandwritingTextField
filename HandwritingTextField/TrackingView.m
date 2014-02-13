@@ -1,9 +1,13 @@
+// This file is part of the HandwritingTextField package.
+//
+// For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+// https://github.com/eelretep/HandwritingTextField
 //
 //  TrackingView.m
 //  HandwritingTextField
 //
 //  Created by Peter Lee on 1/17/14.
-//  Copyright (c) 2014 Peter Lee. All rights reserved.
+//  Copyright (c) 2014 Peter Lee <eelretep@gmail.com>. All rights reserved.
 //
 
 #import "TrackingView.h"
@@ -48,17 +52,6 @@ const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
     
     [self setExclusiveTouch:YES];
     [self setBackgroundColor:[UIColor clearColor]];
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if (self) {
-        [self initCommon];
-    }
-    
-    return self;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -115,23 +108,23 @@ const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
         
         [self addSubview:_showKeyboardButton];
     }
-    
-    if (_backspaceKey == nil) {
-        _backspaceKey = [UIButton buttonWithType:UIButtonTypeSystem];
-        [_backspaceKey setImage:[UIImage imageNamed:@"backspace.png"] forState:UIControlStateNormal];
-        [_backspaceKey addTarget:self action:@selector(backspaceTapped:) forControlEvents:UIControlEventTouchUpInside];
+
+    if (_clearButton == nil) {
+        _clearButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_clearButton setImage:[UIImage imageNamed:@"trash.png"] forState:UIControlStateNormal];
+        [_clearButton addTarget:self action:@selector(clearTapped:) forControlEvents:UIControlEventTouchUpInside];
         
-        [_backspaceKey sizeToFit];
-        CGRect frame = [_backspaceKey frame];
+        [_clearButton sizeToFit];
+        CGRect frame = [_clearButton frame];
         frame.size.width = MAX(frame.size.width, kTrackingViewMinControlWidth);
         frame.size.height = MAX(frame.size.height, kTrackingViewMinControlHeight);
-        frame.origin.x = CGRectGetMaxX(trackingViewBounds) - frame.size.width*2 - _controlsEdgeInsets.left;
+        frame.origin.x = CGRectGetMaxX([_showKeyboardButton frame]);
         frame.origin.y = CGRectGetMaxY(trackingViewBounds) - frame.size.height - _controlsEdgeInsets.bottom;
-        [_backspaceKey setFrame:frame];
+        [_clearButton setFrame:frame];
         
-        [self addSubview:_backspaceKey];
+        [self addSubview:_clearButton];
     }
-    
+
     if (_spaceKey == nil) {
         _spaceKey = [UIButton buttonWithType:UIButtonTypeSystem];
         [_spaceKey setImage:[UIImage imageNamed:@"space.png"] forState:UIControlStateNormal];
@@ -147,6 +140,23 @@ const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
         
         [self addSubview:_spaceKey];
     }
+    
+    if (_backspaceKey == nil) {
+        _backspaceKey = [UIButton buttonWithType:UIButtonTypeSystem];
+        [_backspaceKey setImage:[UIImage imageNamed:@"backspace.png"] forState:UIControlStateNormal];
+        [_backspaceKey addTarget:self action:@selector(backspaceTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [_backspaceKey sizeToFit];
+        CGRect frame = [_backspaceKey frame];
+        frame.size.width = MAX(frame.size.width, kTrackingViewMinControlWidth);
+        frame.size.height = MAX(frame.size.height, kTrackingViewMinControlHeight);
+        frame.origin.x = CGRectGetMinX([_spaceKey frame]) - frame.size.width;
+        frame.origin.y = CGRectGetMaxY(trackingViewBounds) - frame.size.height - _controlsEdgeInsets.bottom;
+        [_backspaceKey setFrame:frame];
+        
+        [self addSubview:_backspaceKey];
+    }
+
     
     [_doneButton setHidden:NO];
     [_showKeyboardButton setHidden:NO];
@@ -185,6 +195,11 @@ const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
     [_delegate trackingView:self didReceiveEvent:TrackingViewEventShowKeyboard];
 }
 
+- (void)clearTapped:(UIButton *)button
+{
+    [_delegate trackingView:self didReceiveEvent:TrackingViewEventClear];
+}
+
 - (void)spaceTapped:(UIButton *)button
 {
     [_delegate trackingView:self didReceiveEvent:TrackingViewEventSpace];
@@ -196,7 +211,7 @@ const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
 }
 
 
-#pragma mark - tracking handling
+#pragma mark - tracking management
 
 - (NSArray *)inkPoints
 {

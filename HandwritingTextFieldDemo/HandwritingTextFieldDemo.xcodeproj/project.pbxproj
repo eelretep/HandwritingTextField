@@ -15,6 +15,7 @@
 		E77A87D21898582900DD7508 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E77A87D01898582900DD7508 /* InfoPlist.strings */; };
 		E77A87D41898582900DD7508 /* HandwritingTextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E77A87D31898582900DD7508 /* HandwritingTextFieldTests.m */; };
 		E77A87DD18999DE600DD7508 /* FakeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = E77A87DC18999DE600DD7508 /* FakeTouch.m */; };
+		E796588818AD8092006CC7B5 /* trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E796588718AD8092006CC7B5 /* trash@2x.png */; };
 		E7F039641893036A00D575D1 /* backspace@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039611893036A00D575D1 /* backspace@2x.png */; };
 		E7F039651893036A00D575D1 /* done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039621893036A00D575D1 /* done@2x.png */; };
 		E7F039661893036A00D575D1 /* keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039631893036A00D575D1 /* keyboard@2x.png */; };
@@ -54,6 +55,7 @@
 		E77A87D51898582900DD7508 /* HandwritingTextFieldTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HandwritingTextFieldTests-Prefix.pch"; sourceTree = "<group>"; };
 		E77A87DB18999DE600DD7508 /* FakeTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeTouch.h; sourceTree = "<group>"; };
 		E77A87DC18999DE600DD7508 /* FakeTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeTouch.m; sourceTree = "<group>"; };
+		E796588718AD8092006CC7B5 /* trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash@2x.png"; sourceTree = "<group>"; };
 		E7F039611893036A00D575D1 /* backspace@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backspace@2x.png"; sourceTree = "<group>"; };
 		E7F039621893036A00D575D1 /* done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "done@2x.png"; sourceTree = "<group>"; };
 		E7F039631893036A00D575D1 /* keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard@2x.png"; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				E7F039631893036A00D575D1 /* keyboard@2x.png */,
 				E7F039611893036A00D575D1 /* backspace@2x.png */,
 				E77A87C11896EBEA00DD7508 /* space@2x.png */,
+				E796588718AD8092006CC7B5 /* trash@2x.png */,
 			);
 			path = resources;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				E7F039641893036A00D575D1 /* backspace@2x.png in Resources */,
 				E7FB5E9A1888994B00AAC64A /* Images.xcassets in Resources */,
 				E7FB5E921888994B00AAC64A /* Main_iPhone.storyboard in Resources */,
+				E796588818AD8092006CC7B5 /* trash@2x.png in Resources */,
 				E77A87C21896EBEA00DD7508 /* space@2x.png in Resources */,
 				E7F039651893036A00D575D1 /* done@2x.png in Resources */,
 				E7FB5E891888994B00AAC64A /* InfoPlist.strings in Resources */,

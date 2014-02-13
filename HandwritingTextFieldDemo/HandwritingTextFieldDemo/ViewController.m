@@ -1,9 +1,13 @@
+// This file is part of the HandwritingTextField package.
+//
+// For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+// https://github.com/eelretep/HandwritingTextField
 //
 //  ViewController.m
 //  HandwritingTextFieldDemo
 //
 //  Created by Peter Lee on 1/16/14.
-//  Copyright (c) 2014 Peter Lee. All rights reserved.
+//  Copyright (c) 2014 Peter Lee <eelretep@gmail.com>. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -27,14 +31,13 @@
 {
     [super viewDidLoad];
     
-    [_textFieldFullscreenView setHandwritingEnabled:YES];
     [_textFieldFullscreenView setHandwritingView:[self view]];
     [_textFieldFullscreenView setDelegate:self];
     
-    [_textFieldCustomView setHandwritingEnabled:YES];
     [_textFieldCustomView setHandwritingView:_customHandwritingView];
     [_textFieldCustomView setDelegate:self];
     
+    // tap to end editing
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [tapRecognizer setDelegate:self];
     [[self view] addGestureRecognizer:tapRecognizer];
@@ -46,10 +49,8 @@
 {
     BOOL shouldBeginEditing = YES;
     
-    if ([textField handwritingEnabled]) {
-        [textField setHandwritingControlsVisible:[_switchControlsVisible isOn]];
-        [textField beginHandwriting];
-    }
+    [textField setHandwritingControlsVisible:[_switchControlsVisible isOn]];
+    [textField beginHandwriting];
     
     return shouldBeginEditing;
 }
@@ -74,6 +75,7 @@
     BOOL shouldReceiveTouch = YES;
 
     if ([[touch view] isKindOfClass:[TrackingView class]]) {
+        // don't intercept handwriting tracking touches 
         shouldReceiveTouch = NO;
     }
     
