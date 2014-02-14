@@ -16,6 +16,11 @@
 		E77A87D41898582900DD7508 /* HandwritingTextFieldTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E77A87D31898582900DD7508 /* HandwritingTextFieldTests.m */; };
 		E77A87DD18999DE600DD7508 /* FakeTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = E77A87DC18999DE600DD7508 /* FakeTouch.m */; };
 		E796588818AD8092006CC7B5 /* trash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E796588718AD8092006CC7B5 /* trash@2x.png */; };
+		E796588A18AE91D4006CC7B5 /* done.png in Resources */ = {isa = PBXBuildFile; fileRef = E796588918AE91D4006CC7B5 /* done.png */; };
+		E796588F18AE9432006CC7B5 /* backspace.png in Resources */ = {isa = PBXBuildFile; fileRef = E796588B18AE9432006CC7B5 /* backspace.png */; };
+		E796589018AE9432006CC7B5 /* keyboard.png in Resources */ = {isa = PBXBuildFile; fileRef = E796588C18AE9432006CC7B5 /* keyboard.png */; };
+		E796589118AE9432006CC7B5 /* space.png in Resources */ = {isa = PBXBuildFile; fileRef = E796588D18AE9432006CC7B5 /* space.png */; };
+		E796589218AE9432006CC7B5 /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = E796588E18AE9432006CC7B5 /* trash.png */; };
 		E7F039641893036A00D575D1 /* backspace@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039611893036A00D575D1 /* backspace@2x.png */; };
 		E7F039651893036A00D575D1 /* done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039621893036A00D575D1 /* done@2x.png */; };
 		E7F039661893036A00D575D1 /* keyboard@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7F039631893036A00D575D1 /* keyboard@2x.png */; };
@@ -56,6 +61,11 @@
 		E77A87DB18999DE600DD7508 /* FakeTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeTouch.h; sourceTree = "<group>"; };
 		E77A87DC18999DE600DD7508 /* FakeTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeTouch.m; sourceTree = "<group>"; };
 		E796588718AD8092006CC7B5 /* trash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash@2x.png"; sourceTree = "<group>"; };
+		E796588918AE91D4006CC7B5 /* done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = done.png; sourceTree = "<group>"; };
+		E796588B18AE9432006CC7B5 /* backspace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backspace.png; sourceTree = "<group>"; };
+		E796588C18AE9432006CC7B5 /* keyboard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard.png; sourceTree = "<group>"; };
+		E796588D18AE9432006CC7B5 /* space.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = space.png; sourceTree = "<group>"; };
+		E796588E18AE9432006CC7B5 /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = "<group>"; };
 		E7F039611893036A00D575D1 /* backspace@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "backspace@2x.png"; sourceTree = "<group>"; };
 		E7F039621893036A00D575D1 /* done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "done@2x.png"; sourceTree = "<group>"; };
 		E7F039631893036A00D575D1 /* keyboard@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard@2x.png"; sourceTree = "<group>"; };
@@ -131,11 +141,16 @@
 		E7F039601893036A00D575D1 /* resources */ = {
 			isa = PBXGroup;
 			children = (
+				E796588918AE91D4006CC7B5 /* done.png */,
 				E7F039621893036A00D575D1 /* done@2x.png */,
+				E796588C18AE9432006CC7B5 /* keyboard.png */,
 				E7F039631893036A00D575D1 /* keyboard@2x.png */,
-				E7F039611893036A00D575D1 /* backspace@2x.png */,
-				E77A87C11896EBEA00DD7508 /* space@2x.png */,
+				E796588E18AE9432006CC7B5 /* trash.png */,
 				E796588718AD8092006CC7B5 /* trash@2x.png */,
+				E796588B18AE9432006CC7B5 /* backspace.png */,
+				E7F039611893036A00D575D1 /* backspace@2x.png */,
+				E796588D18AE9432006CC7B5 /* space.png */,
+				E77A87C11896EBEA00DD7508 /* space@2x.png */,
 			);
 			path = resources;
 			sourceTree = "<group>";
@@ -299,13 +314,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7FB5E951888994B00AAC64A /* Main_iPad.storyboard in Resources */,
+				E796588A18AE91D4006CC7B5 /* done.png in Resources */,
 				E7F039661893036A00D575D1 /* keyboard@2x.png in Resources */,
 				E7F039641893036A00D575D1 /* backspace@2x.png in Resources */,
+				E796589218AE9432006CC7B5 /* trash.png in Resources */,
 				E7FB5E9A1888994B00AAC64A /* Images.xcassets in Resources */,
 				E7FB5E921888994B00AAC64A /* Main_iPhone.storyboard in Resources */,
+				E796589118AE9432006CC7B5 /* space.png in Resources */,
 				E796588818AD8092006CC7B5 /* trash@2x.png in Resources */,
 				E77A87C21896EBEA00DD7508 /* space@2x.png in Resources */,
+				E796589018AE9432006CC7B5 /* keyboard.png in Resources */,
 				E7F039651893036A00D575D1 /* done@2x.png in Resources */,
+				E796588F18AE9432006CC7B5 /* backspace.png in Resources */,
 				E7FB5E891888994B00AAC64A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
