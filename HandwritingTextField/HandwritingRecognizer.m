@@ -203,6 +203,10 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     [request setObject:@[@[xCoordinates, yCoordinates, times]] forKey:@"ink"];
     [JSONObject setObject:@[request] forKey:@"requests"];
     
+    //NSLog(@"JSONObjectForInkPoints - xCoordinates %@", [xCoordinates componentsJoinedByString:@", @"]);
+    //NSLog(@"JSONObjectForInkPoints - yCoordinates %@", [yCoordinates componentsJoinedByString:@", @"]);
+    //NSLog(@"JSONObjectForInkPoints - times %@", [times componentsJoinedByString:@", @"]);
+    
     return JSONObject;
 }
 

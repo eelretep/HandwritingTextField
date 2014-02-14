@@ -57,14 +57,13 @@ const NSTimeInterval kTeardownInterval = 5.0f;
 
 - (void)tearDown
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
     
     [[_mainViewController view] endEditing:YES];
     [_textFieldFullscreenView setText:nil];
     [_textFieldCustomView setText:nil];
     
-    // run loop cleanup
+    // pump the run loop to cleanup
     NSDate *timeoutDate = [NSDate dateWithTimeInterval:kTeardownInterval sinceDate:[NSDate date]];
     [[NSRunLoop currentRunLoop] runUntilDate:timeoutDate];
 }
@@ -83,7 +82,7 @@ const NSTimeInterval kTeardownInterval = 5.0f;
     [_textFieldFullscreenView becomeFirstResponder];
     TrackingView *trackingView = [self trackingViewForTextField:_textFieldFullscreenView];
     
-    NSArray *fakeTouches = [self fakeiPadTouchesFor_a];
+    NSArray *fakeTouches = [self fakeTouchesFor_a];
     [self simulateTouchSequence:fakeTouches inView:trackingView completion:^{
         NSArray *trackingViewInkPoints = [trackingView inkPoints];
         XCTAssert([fakeTouches count] == [trackingViewInkPoints count], @"%s - touch sequence generated mismatched ink points", __PRETTY_FUNCTION__);
@@ -97,23 +96,49 @@ const NSTimeInterval kTeardownInterval = 5.0f;
     [_textFieldFullscreenView becomeFirstResponder];
     TrackingView *trackingView = [self trackingViewForTextField:_textFieldFullscreenView];
     
-    NSArray *fakeTouches = [self fakeiPadTouchesFor_apple];
+    NSArray *fakeTouches = [self fakeTouchesFor_cat];
     [self simulateTouchSequence:fakeTouches inView:trackingView completion:^{
         NSArray *trackingViewInkPoints = [trackingView inkPoints];
         XCTAssert([fakeTouches count] == [trackingViewInkPoints count], @"%s - touch sequence generated mismatched ink points", __PRETTY_FUNCTION__);
         
-        [self fetchAndCheckHandwritingResults:@[@"apple", @"applie", @"applle"] forTextField:_textFieldFullscreenView];
+        [self fetchAndCheckHandwritingResults:@[@"cat", @"cart", @"cost"] forTextField:_textFieldFullscreenView];
     }];
 }
 
 - (void)testTextfieldCustom
 {
-    XCTAssert(NO, @"%s", __PRETTY_FUNCTION__);
+    [_textFieldCustomView becomeFirstResponder];
+    TrackingView *trackingView = [self trackingViewForTextField:_textFieldCustomView];
+    
+    NSArray *fakeTouches = [self fakeTouchesFor_dog];
+    [self simulateTouchSequence:fakeTouches inView:trackingView completion:^{
+        NSArray *trackingViewInkPoints = [trackingView inkPoints];
+        XCTAssert([fakeTouches count] == [trackingViewInkPoints count], @"%s - touch sequence generated mismatched ink points", __PRETTY_FUNCTION__);
+        
+        [self fetchAndCheckHandwritingResults:@[@"dog", @"doy", @"doog"] forTextField:_textFieldCustomView];
+    }];
+
 }
 
 - (void)testTrackingViewDelegate
 {
-    XCTAssert(NO, @"%s", __PRETTY_FUNCTION__);
+    [_textFieldFullscreenView becomeFirstResponder];
+    TrackingView *trackingView = [self trackingViewForTextField:_textFieldFullscreenView];
+    id<TrackingViewDelegate> delegate = [trackingView delegate];
+
+    [delegate trackingView:trackingView didRecognizeText:@"hello"];
+    [delegate trackingView:trackingView didRecognizeText:@"world"];
+    XCTAssert([[_textFieldFullscreenView text] isEqualToString:@"hello world"], @"%s - didRecognizeText failure", __PRETTY_FUNCTION__);
+
+    [delegate trackingView:trackingView didReceiveEvent:TrackingViewEventSpace];
+    XCTAssert([[_textFieldFullscreenView text] isEqualToString:@"hello world "], @"%s - didReceiveEvent(Space) failure", __PRETTY_FUNCTION__);
+
+    [delegate trackingView:trackingView didReceiveEvent:TrackingViewEventBackspace];
+    [delegate trackingView:trackingView didReceiveEvent:TrackingViewEventBackspace];
+    XCTAssert([[_textFieldFullscreenView text] isEqualToString:@"hello worl"], @"%s - didReceiveEvent(Backspace) failure", __PRETTY_FUNCTION__);
+
+    [delegate trackingView:trackingView didReceiveEvent:TrackingViewEventClear];
+    XCTAssert([[trackingView inkPoints] count] == 0, @"%s - didReceiveEvent(Clear) failure", __PRETTY_FUNCTION__);
 }
 
 #pragma mark - helpers
@@ -181,11 +206,11 @@ const NSTimeInterval kTeardownInterval = 5.0f;
 
 }
 
-- (NSArray *)fakeiPadTouchesFor_a
+- (NSArray *)fakeTouchesFor_a
 {
     NSArray *xCoordinates = @[@131, @121, @116, @111, @109, @105, @102, @100, @100, @100, @101, @103, @105, @108, @112, @118, @125, @130, @135, @137, @139, @140, @140, @140, @138, @137, @137, @136, @136, @135, @135, @135, @135, @136, @139, @163, @172, @172];
 
-    NSArray *yCoordinates = @[@758, @758, @760, @762, @765, @771, @776, @782, @786, @788, @789, @790, @790, @790, @790, @790, @787, @784, @782, @780, @775, @772, @769, @768, @765, @764, @763, @763, @761, @761, @760, @762, @765, @770, @777, @795, @799, @798];
+    NSArray *yCoordinates = @[@158, @158, @160, @162, @165, @171, @176, @182, @186, @188, @189, @190, @190, @190, @190, @190, @187, @184, @182, @180, @175, @172, @169, @168, @165, @164, @163, @163, @161, @161, @160, @162, @165, @170, @177, @195, @199, @198];
 
     NSArray *timeOffsetsInMilliseconds = @[@0, @20, @36, @52, @69, @85, @102, @119, @135, @152, @169, @185, @202, @219, @235, @252, @269, @286, @303, @320, @352, @369, @402, @419, @452, @469, @486, @519, @552, @569, @586, @669, @686, @702, @719, @775, @802, @869];
 
@@ -195,21 +220,37 @@ const NSTimeInterval kTeardownInterval = 5.0f;
     return fakeTouches;
 }
 
-- (NSArray *)fakeiPadTouchesFor_apple
+- (NSArray *)fakeTouchesFor_cat
 {
-    NSArray *xCoordinates = @[@148, @146, @144, @137, @130, @121, @114, @107, @103, @100, @100, @100, @102, @106, @110, @117, @125, @132, @140, @149, @153, @154, @156, @156, @156, @156, @156, @156, @154, @153,@152, @151, @149, @149,@149, @149, @149, @149, @149, @149, @151, @153, @158, @162, @164, @171, @178, @185, @190, @193, @195, @196, @223, @223, @223, @223, @221, @221, @221, @221, @221, @221, @221, @221, @221, @221, @221, @221, @221, @223, @226, @228, @231, @234, @237, @238, @239, @242, @246, @247, @248, @248, @248, @247, @244, @240, @235, @230, @223, @222, @265, @265, @265, @265, @262, @262, @260, @258, @257, @257, @257, @258, @259, @265, @272, @279, @284, @290, @294, @297, @299, @301, @304, @305, @305, @304, @299, @294, @286, @280, @274, @272, @331, @331, @330, @330, @330, @330, @330, @330, @330, @330, @329, @329, @329, @329, @329, @329, @351, @352, @356, @363, @373, @383, @390, @395, @395, @395, @394, @391, @388, @383, @376, @373, @369, @366, @364, @361, @358, @357, @357, @355, @355, @354, @354, @354, @354, @354, @357, @358, @362, @368, @376, @387, @397, @404, @412, @421, @428, @435, @439, @441];
+    NSArray *xCoordinates = @[@37, @35, @33, @30, @25, @20, @17, @16, @16, @16, @17, @19, @22, @25, @29, @32, @38, @42, @45, @46, @46, @69, @63, @59, @56, @54, @52, @52, @54, @56, @58, @60, @64, @66, @68, @69, @70, @70, @70, @70, @70, @71, @71, @71, @71, @77, @82, @86, @89, @90, @91, @91, @92, @104, @103, @102, @101, @101, @101, @101, @102, @103, @103, @103, @103, @74, @76, @83, @95, @112, @127, @137];
 
     
-    NSArray *yCoordinates = @[@727, @727, @727, @728, @731, @735, @739, @745, @750, @754, @758, @761, @765, @768, @770, @772, @772, @772, @772, @770, @765, @764, @760, @756, @753, @749, @746, @742, @739, @738, @735, @733, @731, @729, @728, @727, @726, @725, @724, @725, @726, @733, @741, @751, @759, @768, @775, @781, @783, @785, @785, @785, @728, @731, @738, @749, @765, @783, @799, @809, @816, @823, @825, @824, @821, @814, @802, @791, @779, @765, @754, @745, @740, @736, @733, @732, @732, @732, @732, @733, @735, @738, @743, @747, @751, @753, @756, @757, @758, @759, @734, @737, @746, @761, @777, @791, @800, @805, @807, @806, @798, @787, @774, @762, @752, @745, @739, @737, @734, @734, @734, @735, @739, @744, @749, @751, @756, @757, @760, @760, @761, @761, @659, @675, @684, @693, @703, @712, @719, @728, @733, @737, @741, @743, @745, @747, @752, @753, @744, @744, @744, @744, @742, @741, @738, @734, @730, @729, @727, @727, @726, @726, @726, @726, @727, @729, @730, @733, @735, @737, @740, @741, @744, @745, @747, @750, @752, @753, @754, @756, @757, @760, @763, @767, @768, @771, @773, @773, @774, @774, @774, @774];
+    NSArray *yCoordinates = @[@104, @104, @105, @107, @109, @115, @119, @123, @125, @127, @129, @129, @130, @130, @130, @129, @128, @127, @127, @127, @126, @107, @109, @113, @116, @120, @123, @127, @129, @130, @131, @131, @130, @128, @125, @123, @121, @118, @116, @114, @112, @111, @110, @111, @114, @125, @129, @132, @132, @132, @132, @132, @130, @75, @83, @92, @103, @116, @130, @140, @146, @149, @148, @147, @144, @101, @101, @102, @103, @104, @104, @104];
     
-    NSArray *timeOffsetsInMilliseconds = @[@0, @37, @53, @70, @87, @103, @120, @137, @154, @170, @187, @203, @220, @236, @254, @270, @287, @304, @320, @337, @353, @370, @387, @404, @420, @437, @453, @470, @487, @503, @520, @537, @570, @587, @604, @637, @671, @703, @737, @804, @820, @836, @853, @871, @887, @903, @920, @937, @953, @970, @987, @1087, @1416, @1437, @1453, @1470, @1487, @1503, @1520, @1537, @1555, @1588, @1621, @1671, @1687, @1704, @1721, @1737, @1753, @1770, @1786, @1804, @1820, @1837, @1853, @1870, @1887, @1903, @1937, @1953, @1970, @1986, @2003, @2020, @2037, @2053, @2070, @2087, @2121, @2204, @2496, @2520, @2537, @2553, @2570, @2587, @2603, @2620, @2637, @2703, @2720, @2736, @2753, @2770, @2787, @2803, @2820, @2837, @2853, @2871, @2887, @2903, @2920, @2936, @2953, @2970, @2986, @3003, @3020, @3037, @3053, @3070, @3496, @3520, @3536, @3553, @3570, @3586, @3603, @3620, @3637, @3653, @3670, @3686, @3703, @3720, @3736, @3753, @4256, @4286, @4303, @4320, @4337, @4353, @4370, @4404, @4436, @4453, @4469, @4486, @4503, @4519, @4536, @4553, @4570, @4587, @4603, @4620, @4636, @4653, @4670, @4686, @4703, @4720, @4737, @4753, @4769, @4787, @4803, @4820, @4836, @4853, @4870, @4886, @4903, @4919, @4936, @4953, @4970, @4986, @5003, @5070];
+    NSArray *timeOffsetsInMilliseconds = @[@0, @19, @35, @52, @71, @102, @119, @135, @152, @169, @185, @202, @219, @235, @252, @269, @285, @302, @318, @336, @368, @792, @818, @836, @852, @868, @886, @902, @919, @936, @952, @969, @985, @1002, @1019, @1036, @1052, @1069, @1086, @1103, @1136, @1169, @1219, @1319, @1336, @1369, @1385, @1402, @1418, @1452, @1469, @1485, @1503, @2007, @2035, @2052, @2069, @2085, @2102, @2118, @2135, @2152, @2235, @2252, @2268, @2552, @2568, @2585, @2602, @2618, @2636, @2669];
     
-    NSArray *touchesEndedTimeOffsets = @[@1087, @2204, @3070, @3753, @5070];
+    NSArray *touchesEndedTimeOffsets = @[@368, @1503, @2268];
     
     NSArray *fakeTouches = [self fakeTouchesForxCoordinates:xCoordinates yCoordinates:yCoordinates timeOffsetsInMilliseconds:timeOffsetsInMilliseconds touchesEndedTimeOffsets:touchesEndedTimeOffsets];
     
     return fakeTouches;
 }
+
+- (NSArray *)fakeTouchesFor_dog
+{
+    NSArray *xCoordinates = @[@44, @45, @45, @46, @46, @47, @48, @48, @49, @49, @49, @49, @48, @47, @44, @40, @35, @31, @24, @22, @22, @21, @22, @24, @29, @38, @46, @51, @54, @56, @56, @56, @56, @56, @69, @67, @67, @70, @76, @81, @86, @89, @91, @91, @90, @88, @83, @77, @72, @72, @72, @126, @118, @115, @112, @110, @109, @109, @110, @113, @117, @124, @131, @137, @141, @143, @143, @143, @142, @142, @142, @142, @142, @141, @139, @136, @133, @129, @123, @115, @105, @94, @83, @78];
+    
+    NSArray *yCoordinates = @[@23, @31, @37, @44, @50, @57, @62, @65, @66, @65, @65, @61, @59, @57, @55, @54, @53, @53, @53, @55, @57, @59, @64, @67, @70, @72, @72, @72, @72, @71, @70, @70, @69, @69, @57, @62, @65, @68, @70, @71, @71, @70, @67, @64, @61, @57, @54, @52, @51, @51, @52, @51, @51, @51, @53, @55, @58, @62, @64, @67, @69, @70, @70, @68, @66, @63, @58, @55, @54, @54, @55, @56, @58, @64, @73, @82, @89, @96, @99, @100, @100, @97, @93, @90];
+
+    NSArray *timeOffsetsInMilliseconds = @[@0, @19, @39, @58, @74, @91, @108, @125, @141, @208, @224, @252, @269, @286, @303, @319, @336, @353, @386, @403, @419, @436, @469, @486, @502, @519, @536, @553, @569, @586, @603, @619, @636, @652, @1007, @1038, @1057, @1074, @1091, @1107, @1124, @1141, @1157, @1174, @1191, @1208, @1224, @1240, @1269, @1302, @1320, @1847, @1869, @1886, @1902, @1919, @1935, @1952, @1969, @1986, @2002, @2019, @2036, @2053, @2070, @2087, @2120, @2153, @2170, @2185, @2269, @2286, @2302, @2319, @2336, @2352, @2369, @2386, @2402, @2419, @2436, @2453, @2469, @2486];
+    
+    NSArray *touchesEndedTimeOffsets = @[@652, @1320];
+    
+    NSArray *fakeTouches = [self fakeTouchesForxCoordinates:xCoordinates yCoordinates:yCoordinates timeOffsetsInMilliseconds:timeOffsetsInMilliseconds touchesEndedTimeOffsets:touchesEndedTimeOffsets];
+    
+    return fakeTouches;
+}
+
 
 - (NSArray *)fakeTouchesForxCoordinates:(NSArray *)xCoordinates yCoordinates:(NSArray *)yCoordinates timeOffsetsInMilliseconds:(NSArray *)timeOffsetsInMilliseconds touchesEndedTimeOffsets:(NSArray *)touchesEndedTimeOffsets
 {
