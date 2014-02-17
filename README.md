@@ -8,9 +8,19 @@ It provides:
 - Handwriting view property for tracking and handwriting recognition results
 - Custom controls
 - Asynchronous recognition via google
+- TrackingViewDelegate allows for easy customization and filtering
 - Uses GCD and ARC
 - Uses NSURLSession, so iOS >= 7.0
 - Demo projects for iPhone and iPad
+
+
+Screenshots
+-----------
+Full screen mode:
+![Full screen](https://github.com/eelretep/HandwritingTextField/blob/master/screenshots/full_screen.png)
+
+Custom view mode:
+![Custom view](https://github.com/eelretep/HandwritingTextField/blob/master/screenshots/custom_view.png)
 
 
 What's Included
