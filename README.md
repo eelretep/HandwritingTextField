@@ -22,8 +22,7 @@ Screenshots
 
 What's Included
 ---------------
-HandwritingTextField folder - UITextField category
-HandwritingTextFieldDemo - demo project
+HandwritingTextField folder contains all the files neccessary to utilize the UITextField category. HandwritingTextFieldDemo folder contains the demo project.
 
 
 How To Use
