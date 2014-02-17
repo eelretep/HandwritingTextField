@@ -16,11 +16,9 @@ It provides:
 
 Screenshots
 -----------
-Full screen mode:
-![Full screen](https://github.com/eelretep/HandwritingTextField/blob/master/screenshots/full_screen.png)
 
-Custom view mode:
-![Custom view](https://github.com/eelretep/HandwritingTextField/blob/master/screenshots/custom_view.png)
+![Full screen](/screenshots/full_screen.png?raw=true)
+![Custom view](/screenshots/custom_view.png?raw=true)
 
 
 What's Included
