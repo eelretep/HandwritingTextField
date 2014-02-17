@@ -17,7 +17,6 @@ It provides:
 Screenshots
 -----------
 
-![Full screen](/screenshots/full_screen.png?raw=true)
 ![Custom view](/screenshots/custom_view.png?raw=true)
 
 
