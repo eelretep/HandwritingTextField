@@ -77,12 +77,15 @@ static void const * kTextFieldTrackingViewKey = &kTextFieldTrackingViewKey;
 
     // control visibility
     TrackingView *trackingView = [self trackingView];
-    if (CGRectEqualToRect([trackingView bounds], [[trackingView window] bounds])) {
+    CGRect windowBounds = [[trackingView window] bounds];
+    windowBounds = [trackingView convertRect:windowBounds fromView:[trackingView window]];
+    if (CGRectEqualToRect([trackingView bounds], windowBounds)) {
        
         // when tracking in fullscreen, don't obscure the status bar
         if ([[UIApplication sharedApplication] isStatusBarHidden] == NO) {
             UIEdgeInsets edgeInsets = [trackingView controlsEdgeInsets];
-            edgeInsets.top = 20.0f;
+            CGSize statusBarSize = [[UIApplication sharedApplication] statusBarFrame].size;
+            edgeInsets.top = MIN(statusBarSize.width, statusBarSize.height);
             [trackingView setControlsEdgeInsets:edgeInsets];
         }
         

@@ -16,7 +16,7 @@
 
 #define MIDPOINT(p1,p2)             CGPointMake((p1.x + p2.x) * 0.5, (p1.y + p2.y) * 0.5)
 
-const CGFloat kTrackingViewMinControlWidth = 50.0f;
+const CGFloat kTrackingViewMinControlWidth = 40.0f;
 const CGFloat kTrackingViewMinControlHeight = 25.0f;
 
 const CGFloat kMinDistance = 5;
@@ -160,6 +160,7 @@ const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
     
     [_doneButton setHidden:NO];
     [_showKeyboardButton setHidden:NO];
+    [_clearButton setHidden:NO];
     [_backspaceKey setHidden:NO];
     [_spaceKey setHidden:NO];
 }
@@ -168,6 +169,7 @@ const CGFloat kMinDistanceSquared = kMinDistance * kMinDistance;
 {
     [_doneButton setHidden:YES];
     [_showKeyboardButton setHidden:YES];
+    [_clearButton setHidden:YES];
     [_backspaceKey setHidden:YES];
     [_spaceKey setHidden:YES];
 }

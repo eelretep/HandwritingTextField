@@ -294,15 +294,18 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
     }
     
     [resultsScrollView setFrame:scrollviewFrame];
-    
-    // position the results control in the middle of the scroll view
+
+    // position the results control in scrollview
     UISegmentedControl *resultsSegmentedControl = [self resultsSegmentedControl:trackingView];
     CGRect resultsControlFrame = [resultsSegmentedControl frame];
 
-    if (resultsControlFrame.size.width < scrollviewFrame.size.width) {
+    if (resultsControlFrame.size.width >= scrollviewFrame.size.width) {
+        resultsControlFrame.origin.x = 0.0f;
+    } else {
         resultsControlFrame.origin.x = scrollviewFrame.size.width/2 - resultsControlFrame.size.width/2;
-        [resultsSegmentedControl setFrame:resultsControlFrame];
     }
+    
+    [resultsSegmentedControl setFrame:resultsControlFrame];
 }
 
 - (UIScrollView *)resultsScrollView:(TrackingView *)trackingView
