@@ -153,7 +153,7 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
             NSArray *responseJSON = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
             NSString *statusString = [responseJSON objectAtIndex:0];
             if ([statusString isEqualToString:@"SUCCESS"]) {
-                NSArray *resultsArray = [[[responseJSON lastObject] lastObject] lastObject];
+                NSArray *resultsArray = [self findResultsArrayFromResponse:responseJSON];
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSArray *resultsToDisplay = resultsArray;
@@ -166,10 +166,23 @@ NSString * const kNoResultsText         = @"No Handwriting Results";
                 });
             }
             
-            //NSLog(@"requestOCRForInkPoints (%@)  %@ \n\n--------------->\n\n %@", urlRequest, requestJSON, responseJSON);
+            NSLog(@"requestOCRForInkPoints (%@)  %@ \n\n--------------->\n\n %@", urlRequest, requestJSON, responseJSON);
         }
     }];
     [_handwritingRecognitionTask resume];
+}
+
+- (NSArray *)findResultsArrayFromResponse:(NSArray *)responseJSON
+{
+    NSArray *results = nil;
+    for (id object in [[responseJSON lastObject] lastObject]) {
+        if ([object isKindOfClass:[NSArray class]]) {
+            results = object;
+            break;
+        }
+    }
+    
+    return results;
 }
 
 - (NSDictionary *)JSONObjectForInkPoints:(NSArray *)inkPoints
